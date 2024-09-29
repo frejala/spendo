@@ -63,7 +63,8 @@ export const Navigation = () => {
                 key={idx}
                 variant={route.href === pathname ? "secondary" : "ghost"}
                 onClick={() => onClick(route.href)}
-                className="w-full justify-start"
+                className="w-full justify-start size-16"
+                size="lg"
               >
                 {route.label}
               </Button>
