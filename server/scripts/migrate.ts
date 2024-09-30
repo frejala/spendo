@@ -1,12 +1,12 @@
 import { config } from "dotenv";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { db, connection } from "../db/db";
+import { db, connection } from "@server/db/db";
 
 config({ path: ".env.local" });
 
 const main = async () => {
   try {
-    await migrate(db, { migrationsFolder: "src/db/migrations" });
+    await migrate(db, { migrationsFolder: "server/db/migrations" });
     await connection.end();
   } catch (error) {
     console.error("Error during migration: ", error);
