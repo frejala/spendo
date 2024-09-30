@@ -15,6 +15,13 @@
       "when": 1727720431447,
       "tag": "0001_dusty_black_crow",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727726971769,
+      "tag": "0002_lonely_jetstream",
+      "breakpoints": true
     }
   ]
 }
