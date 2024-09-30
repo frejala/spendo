@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 
 import { db } from "@server/db/db";
 import { accounts } from "@server/db/schema";
+import { eq } from "drizzle-orm";
 
 const app = new Hono().get("/", clerkMiddleware(), async (c) => {
   const auth = getAuth(c);
@@ -20,7 +21,8 @@ const app = new Hono().get("/", clerkMiddleware(), async (c) => {
       first_name: accounts.firstName,
       last_name: accounts.lastName,
     })
-    .from(accounts);
+    .from(accounts)
+    .where(eq(accounts.userId, auth.userId));
 
   return c.json({ data });
 });
