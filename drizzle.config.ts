@@ -5,7 +5,7 @@ config({ path: ".env.local" });
 
 export default defineConfig({
   schema: "./server/db/schema.ts",
-  out: "./server/db/migrations",
+  out: "./migrations",
   dialect: "postgresql",
   dbCredentials: {
     host: process.env.DB_HOST!,

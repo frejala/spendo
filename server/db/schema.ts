@@ -1,9 +1,11 @@
 import { pgTable, text } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 
 export const accounts = pgTable("accounts", {
   id: text("id").primaryKey(),
   plaidId: text("plaid_id"),
-  firstName: text("first_name").notNull(),
-  lastName: text("last_name").notNull(),
+  name: text("name").notNull(),
   userId: text("user_id").notNull(),
 });
+
+export const insertAccountSchema = createInsertSchema(accounts);
