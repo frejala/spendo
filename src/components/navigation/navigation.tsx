@@ -53,7 +53,7 @@ export const Navigation = () => {
             size="sm"
             className="font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-white focus:bg-white/30 transition"
           >
-            <Menu className="size-4" />
+            <Menu className="h-4 w-4" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="px-2">
@@ -63,7 +63,7 @@ export const Navigation = () => {
                 key={idx}
                 variant={route.href === pathname ? "secondary" : "ghost"}
                 onClick={() => onClick(route.href)}
-                className="w-full justify-start size-16"
+                className="w-full justify-start h-16"
                 size="lg"
               >
                 {route.label}
