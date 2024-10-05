@@ -1,21 +1,20 @@
 import { Hono } from "hono";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
-import { HTTPException } from "hono/http-exception";
+// import { HTTPException } from "hono/http-exception";
 import { createId } from "@paralleldrive/cuid2";
 
 import { db } from "@server/db/db";
 import { accounts, insertAccountSchema } from "@server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and, inArray } from "drizzle-orm";
+import { z } from "zod";
 
 const app = new Hono()
   .get("/", clerkMiddleware(), async (c) => {
     const auth = getAuth(c);
 
     if (!auth?.userId) {
-      throw new HTTPException(401, {
-        res: c.json({ error: "Unauthorized" }, 401),
-      });
+      return c.json({ error: "Unauthorized" }, 401);
     }
 
     const data = await db
@@ -37,9 +36,7 @@ const app = new Hono()
       const values = c.req.valid("json");
 
       if (!auth?.userId) {
-        throw new HTTPException(401, {
-          res: c.json({ error: "Unauthorized" }, 401),
-        });
+        return c.json({ error: "Unauthorized" }, 401);
       }
 
       const [data] = await db
@@ -52,6 +49,33 @@ const app = new Hono()
         .returning();
 
       c.json({ data });
+    }
+  )
+  .post(
+    "/bulk-delete",
+    clerkMiddleware(),
+    zValidator(
+      "json",
+      z.object({
+        ids: z.array(z.string()),
+      })
+    ),
+    async (c) => {
+      const auth = getAuth(c);
+      const { ids } = c.req.valid("json");
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const data = await db
+        .delete(accounts)
+        .where(and(eq(accounts.userId, auth.userId), inArray(accounts.id, ids)))
+        .returning({
+          id: accounts.id,
+        });
+
+      return c.json({ data });
     }
   );
 
