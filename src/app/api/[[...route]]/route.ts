@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import accounts from "./accounts";
 import { HTTPException } from "hono/http-exception";
+import categories from "./categories";
+import accounts from "./accounts";
 
 export const runtime = "nodejs";
 
@@ -16,7 +17,9 @@ app.onError((err, c) => {
   return c.json({ error: "Internal Server Error" }, 500);
 });
 
-const routes = app.route("/accounts", accounts);
+const routes = app
+  .route("/accounts", accounts)
+  .route("/categories", categories);
 
 export const GET = handle(app);
 export const POST = handle(app);
