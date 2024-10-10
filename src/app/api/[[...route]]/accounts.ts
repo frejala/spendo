@@ -79,7 +79,7 @@ const app = new Hono()
         })
         .returning();
 
-      c.json({ data });
+      return c.json({ data });
     }
   )
   .post(
